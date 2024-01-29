@@ -1,11 +1,16 @@
-import contactsService from '../services/contactsServices.js';
+import {
+  listContacts,
+  getContactById,
+  removeContact,
+  addContact,
+  updateById,
+  updateStatusContact,
+} from '../services/contactsServices.js';
+
 import {
   createContactSchema,
   updateContactSchema,
 } from '../schemas/contactsSchemas.js';
-
-const { listContacts, getContactById, removeContact, addContact, updateById } =
-  contactsService;
 
 export const getAllContacts = async (req, res) => {
   const result = await listContacts();
@@ -61,11 +66,35 @@ export const updateContact = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 
-  const result = await updateById(id, req.body);
+  const result = await updateById(id, name, email, phone);
 
   if (result) {
     res.status(200).json(result);
   } else {
     res.status(404).json({ message: 'Not found' });
+  }
+};
+
+export const updateFavoriteContact = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { favorite } = req.body;
+
+    if (typeof favorite !== 'boolean') {
+      return res
+        .status(400)
+        .json({ message: 'Favorite must be a boolean value' });
+    }
+
+    const result = await updateStatusContact(id, favorite);
+
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).json({ message: 'Not found' });
+    }
+  } catch (error) {
+    console.error(`Error updating contact status: ${error}`);
+    res.status(500).json({ message: 'Server error' });
   }
 };
