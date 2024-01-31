@@ -9,7 +9,7 @@ async function getContactById(contactId) {
 }
 
 async function removeContact(contactId) {
-  return (await Contact.findByIdAndRemove(contactId)) || null;
+  return (await Contact.findByIdAndDelete(contactId)) || null;
 }
 
 async function addContact(name, email, phone) {
