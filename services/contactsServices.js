@@ -32,10 +32,9 @@ async function updateById(id, name, email, phone) {
   return contact;
 }
 
-async function updateStatusContact(contactId, favorite) {
+async function updateStatusContact(id, favorite) {
   return (
-    (await Contact.findByIdAndUpdate(contactId, { favorite }, { new: true })) ||
-    null
+    (await Contact.findByIdAndUpdate(id, { favorite }, { new: true })) || null
   );
 }
 
