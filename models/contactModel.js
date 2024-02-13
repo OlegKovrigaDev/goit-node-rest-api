@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+import handleMongooseError from '../helpers/handleMongooseError.js';
 import { User } from './userModel.js';
 
 const contactSchema = new Schema(
@@ -22,7 +23,7 @@ const contactSchema = new Schema(
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: User,
+      ref: 'User',
     },
   },
   {
@@ -31,6 +32,7 @@ const contactSchema = new Schema(
   }
 );
 
+contactSchema.post('save', handleMongooseError);
 const Contact = model('Contact', contactSchema);
 
 export { Contact };

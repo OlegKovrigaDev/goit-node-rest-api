@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+import handleMongooseError from '../helpers/handleMongooseError.js';
 
 const userSchema = new Schema(
   {
@@ -27,6 +28,7 @@ const userSchema = new Schema(
   }
 );
 
+userSchema.post('save', handleMongooseError);
 const User = model('User', userSchema);
 
 export { User };
